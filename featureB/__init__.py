@@ -30,7 +30,7 @@ def main():
     thread2.start()
     thread1.join()
     thread2.join()
-    
+    print("Test")
 
 if __name__ == "__main__":
     main()
