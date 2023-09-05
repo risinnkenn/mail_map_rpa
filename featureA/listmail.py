@@ -163,6 +163,7 @@ def main(query="is:unread", tag="daily_report", count=3):
     logger.info(json.dumps(messages, ensure_ascii=False))
     if messages:
         return json.dumps(messages, ensure_ascii=False)
+        #return messages
     else:
         return None
 
@@ -177,3 +178,11 @@ if __name__ == "__main__":
 
     messages_ = main(query=query, tag=tag, count=count)
     print(messages_)
+    
+    output = eval(messages_)
+    print("eval_list[0]:{}".format(output[0]))
+    print(type(output[0]))
+    print(output[0]["body"])
+
+
+    
