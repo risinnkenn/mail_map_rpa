@@ -38,6 +38,8 @@ def get_path(adress):
     time.sleep(5)
     driver_path.find_element(By.XPATH,'//*[@id="main_menu"]/ul/li[3]/button/span').click()
     time.sleep(5)
+
+    #waitタイムの改善
 def get_dutywater(adress):
     ##
     driver_duty = webdriver.Chrome()
