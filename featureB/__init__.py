@@ -24,8 +24,8 @@ def main():
     executor.submit(get_path)
     executor.submit(get_dutywater)
     """
-    thread1 = threading.Thread(target=get_path)
-    thread2 = threading.Thread(target=get_dutywater)
+    thread1 = threading.Thread(target=get_path("仲町"))
+    thread2 = threading.Thread(target=get_dutywater("仲町"))
     thread1.start()
     thread2.start()
     thread1.join()
@@ -33,4 +33,4 @@ def main():
 
 if __name__ == "__main__":
     main()
-    time.sleep(20)
+    time.sleep(40)
