@@ -15,11 +15,11 @@ import logging
 from docopt import docopt
 import time
 
-def kukuridasi(adress):
+def kukuridasi(adress_1):
     target = "住所："
     # idx = adress.find(target)
     # print(adress[idx+3: ]if idx!= -1 else "not found")
-    lines = adress.split()
+    lines = adress_1.split()
     get_target = [s.replace(target,"") for s in lines if target in s]
     return get_target
     
@@ -38,7 +38,7 @@ if __name__=="__main__":
     
     while True:
         
-        adress = output_(messages_,query,tag,count)
-        adress_main = kukuridasi(adress)
-        print(adress_main)
+        adress_1 = output_(messages_,query,tag,count)
+        adress = kukuridasi(adress_1)
+        print(adress)
         messages_ = None
