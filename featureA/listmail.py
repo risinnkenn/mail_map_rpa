@@ -170,7 +170,7 @@ def main(query="is:unread", tag="daily_report", count=3):
 
 
 # プログラム実行部分
-#住所情報を渡す
+#メールに関わる情報を辞書にして渡す
 def output_(messages_,query,tag,count):
     while messages_ == None :
         messages_ = main(query=query, tag=tag, count=count)

@@ -15,18 +15,22 @@ import logging
 from docopt import docopt
 import time
 
-def adress_output(adress_1):
-    adress_2 = adress_1["body"]
+def adress_output(mail_dict):
+    adress = mail_dict["body"]
 
     target = "住所："
     # idx = adress.find(target)
     # print(adress[idx+3: ]if idx!= -1 else "not found")
-    lines = adress_2.split()
+    lines = adress.split()
     get_target = [s.replace(target,"") for s in lines if target in s]
     return get_target
 
-def mail_output(adress_1):
-    return adress_1["from"]
+def mail_output(mail_dict):
+    lines =  mail_dict["from"]
+    print(type(lines))
+    start = lines.index("<")
+    end = lines.index(">")
+    return mail_dict["from"][start+1:end]
     
 
 
@@ -43,13 +47,13 @@ if __name__=="__main__":
     
     while True:
         
-        adress_1 = output_(messages_,query,tag,count)
-        print(adress_1)
+        mail_dict = output_(messages_,query,tag,count)
+        print(mail_dict)
         
-        adress = adress_output(adress_1)
+        adress = adress_output(mail_dict)
         print(adress)
 
-        mail = mail_output(adress_1)
+        mail = mail_output(mail_dict)
         print(mail)
 
         
