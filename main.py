@@ -15,13 +15,18 @@ import logging
 from docopt import docopt
 import time
 
-def kukuridasi(adress_1):
+def adress_output(adress_1):
+    adress_2 = adress_1["body"]
+
     target = "住所："
     # idx = adress.find(target)
     # print(adress[idx+3: ]if idx!= -1 else "not found")
-    lines = adress_1.split()
+    lines = adress_2.split()
     get_target = [s.replace(target,"") for s in lines if target in s]
     return get_target
+
+def mail_output(adress_1):
+    return adress_1["from"]
     
 
 
@@ -39,6 +44,15 @@ if __name__=="__main__":
     while True:
         
         adress_1 = output_(messages_,query,tag,count)
-        adress = kukuridasi(adress_1)
+        print(adress_1)
+        
+        adress = adress_output(adress_1)
         print(adress)
+
+        mail = mail_output(adress_1)
+        print(mail)
+
+        
+
+
         messages_ = None

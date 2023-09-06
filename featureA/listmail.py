@@ -170,15 +170,18 @@ def main(query="is:unread", tag="daily_report", count=3):
 
 
 # プログラム実行部分
+#住所情報を渡す
 def output_(messages_,query,tag,count):
     while messages_ == None :
         messages_ = main(query=query, tag=tag, count=count)
     output = eval(messages_)
-    print("eval_list[0]:{}".format(output[0]))
-    print(type(output[0]))
-    print(output[0]["body"])
-    print("test")
-    return output[0]["body"]
+    # print("eval_list[0]:{}".format(output[0]))
+    # print(type(output[0]))
+    # print(output[0]["body"])
+    # print("test")
+    return output[0]
+
+
 
 
     
