@@ -4,7 +4,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support import expected_conditions
 import time
-from multiprocessing import Process
+from multiprocessing import Process, Pipe
 import requests
 import io
 from PIL import Image
@@ -20,9 +20,11 @@ def arrange_adress(adress):
         return adress
 
 
-def get_path(URL_path,adress,queue):
+def get_path(URL_path,adress,que,send_rev):
     ##第一関数　ほしいデータのURL
     ##第二関数　とりたいデータの住所
+    ##第三関数　地図の種類
+    ##第四関数　データを送る魔法
     driver_path = webdriver.Chrome()
     driver_path.get(URL_path)
     driver_path.implicitly_wait(1)
@@ -46,7 +48,7 @@ def get_path(URL_path,adress,queue):
     #送られてきた市町村があるかどうかのチェック
     if "該当する情報はありません。" == driver_path.find_element(By.XPATH, '//*[@id="search_menu_feature"]/div/div[2]/div').get_attribute("textContent"):
         print(adress)
-        return ["Don't have path",False]
+        send_rev.send(["該当する情報はありません。",False])
     else:
         try:
             #検索した市町村の選択
@@ -67,30 +69,38 @@ def get_path(URL_path,adress,queue):
             img = requests.get(img_url).content
             img_file = io.BytesIO(img)
             img_rec = Image.open(img_file)
-            img_rec.save(queue +''+adress+ '.pdf')
-            return [queue +''+adress+ '.pdf',False]
+            img_rec.save(adress+ '.pdf')
+            send_rev.send([que+''+adress+ '.pdf',True])
         except Exception as e:
             print("住所はあったのに悲しいな")
-            return ['fetureB/'+queue +''+adress+ '.pdf',False]
-  
+            send_rev.send(["住所はあったのに悲しいな",False])
+        send_rev.close()
 def main(adress_list):
     #Aから送られてきたlistをひとつづつ処理
-    send_list=[]
+    image_list=[]
     for i in adress_list:
+        get_rev_path,send_rev_path  = Pipe()
+        get_rev_duty,send_rev_duty  = Pipe()
         adress = arrange_adress(i)
         #道路のURL
         URL_path="https://www.sonicweb-asp.jp/saitama/map?theme=th_31#pos=139.64570430607762%2C35.86413196358075&scale=30000"
         #下水のURL
         URL_duty="https://www.sonicweb-asp.jp/saitama/map?theme=th_90#pos=139.62844162611339%2C35.898370027849545&scale=30000"
-        process1 = Process(target=get_path, args=(URL_path, adress, "image_path"))
-        process2 = Process(target=get_path, args=(URL_duty, adress, "image_duty"))
+        process1 = Process(target=get_path, args=(URL_path, adress, "image_path",send_rev_path))
+        process2 = Process(target=get_path, args=(URL_duty, adress, "image_duty",send_rev_duty))
         # プロセスを開始
         process1.start()
         process2.start()
+        get_p = get_rev_path.recv()
+        get_d = get_rev_duty.recv()
         # プロセスが終了するまで待機
         process1.join()
         process2.join()
-    
+        get_p.extend(get_d)
+        image_list.append(get_p)
+        print(image_list)
+
+   
 if __name__ == "__main__":
     list_adress=["埼玉県さいたま市大宮区大門町2丁目1-1",
         "埼玉県さいたま市大宮区大門町２ー1-１",
