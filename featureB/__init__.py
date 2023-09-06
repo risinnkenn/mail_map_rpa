@@ -4,7 +4,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support import expected_conditions
 import time
-from multiprocessing import Process,Queue
+from multiprocessing import Process
 import requests
 import io
 from PIL import Image
@@ -46,41 +46,51 @@ def get_path(URL_path,adress,queue):
     #送られてきた市町村があるかどうかのチェック
     if "該当する情報はありません。" == driver_path.find_element(By.XPATH, '//*[@id="search_menu_feature"]/div/div[2]/div').get_attribute("textContent"):
         print(adress)
+        return ["Don't have path",False]
     else:
-        #検索した市町村の選択
-        driver_path.find_element(By.XPATH,'//*[@id="search_menu_feature"]/div/div[2]/div[1]/div/p').click()
-        driver_path.implicitly_wait(20)
+        try:
+            #検索した市町村の選択
+            driver_path.find_element(By.XPATH,'//*[@id="search_menu_feature"]/div/div[2]/div[1]/div/p').click()
+            driver_path.implicitly_wait(20)
 
-        #画像を表示
-        driver_path.find_element(By.XPATH,'//*[@id="main_menu"]/button/span').click()
-        wait = WebDriverWait(driver_path, 20)
-        time.sleep(2)
-        elem_button = wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="main_menu"]/ul/li[3]/button/span')))
-        elem_button.click()
+            #画像を表示
+            driver_path.find_element(By.XPATH,'//*[@id="main_menu"]/button/span').click()
+            wait = WebDriverWait(driver_path, 20)
+            time.sleep(2)
+            elem_button = wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="main_menu"]/ul/li[3]/button/span')))
+            elem_button.click()
 
-        #画像を取得
-        elem_imgUrl = wait.until(EC.presence_of_element_located((By.XPATH, '//*[@id="copy"]/div[2]/div/div/div[2]/img')))
-        driver_path.implicitly_wait(20)
-        img_url = elem_imgUrl.get_attribute('src')
-        img = requests.get(img_url).content
-        img_file = io.BytesIO(img)
-        img_rec = Image.open(img_file)
-        img_rec.save(queue +''+adress+ '.pdf')
+            #画像を取得
+            elem_imgUrl = wait.until(EC.presence_of_element_located((By.XPATH, '//*[@id="copy"]/div[2]/div/div/div[2]/img')))
+            driver_path.implicitly_wait(20)
+            img_url = elem_imgUrl.get_attribute('src')
+            img = requests.get(img_url).content
+            img_file = io.BytesIO(img)
+            img_rec = Image.open(img_file)
+            img_rec.save(queue +''+adress+ '.pdf')
+            return [queue +''+adress+ '.pdf',False]
+        except Exception as e:
+            print("住所はあったのに悲しいな")
+            return ['fetureB/'+queue +''+adress+ '.pdf',False]
   
-def main(adress):
-    adress = arrange_adress(adress)
-    #道路のURL
-    URL_path="https://www.sonicweb-asp.jp/saitama/map?theme=th_31#pos=139.64570430607762%2C35.86413196358075&scale=30000"
-    #下水のURL
-    URL_duty="https://www.sonicweb-asp.jp/saitama/map?theme=th_90#pos=139.62844162611339%2C35.898370027849545&scale=30000"
-    process1 = Process(target=get_path, args=(URL_path, adress, "image_path"))
-    process2 = Process(target=get_path, args=(URL_duty, adress, "image_duty"))
-    # プロセスを開始
-    process1.start()
-    process2.start()
-    # プロセスが終了するまで待機
-    process1.join()
-    process2.join()
+def main(adress_list):
+    #Aから送られてきたlistをひとつづつ処理
+    send_list=[]
+    for i in adress_list:
+        adress = arrange_adress(i)
+        #道路のURL
+        URL_path="https://www.sonicweb-asp.jp/saitama/map?theme=th_31#pos=139.64570430607762%2C35.86413196358075&scale=30000"
+        #下水のURL
+        URL_duty="https://www.sonicweb-asp.jp/saitama/map?theme=th_90#pos=139.62844162611339%2C35.898370027849545&scale=30000"
+        process1 = Process(target=get_path, args=(URL_path, adress, "image_path"))
+        process2 = Process(target=get_path, args=(URL_duty, adress, "image_duty"))
+        # プロセスを開始
+        process1.start()
+        process2.start()
+        # プロセスが終了するまで待機
+        process1.join()
+        process2.join()
+    
 if __name__ == "__main__":
     list_adress=["埼玉県さいたま市大宮区大門町2丁目1-1",
         "埼玉県さいたま市大宮区大門町２ー1-１",
@@ -92,5 +102,4 @@ if __name__ == "__main__":
         "さいたま市南区沼影１丁目20-1",
         "埼玉県さいたま市南区沼影１丁目２０番地１号",
         "埼玉県さいたま市大宮区大門町６丁目５"]
-    for i in list_adress:
-        main(i)
+    main(list_adress)
