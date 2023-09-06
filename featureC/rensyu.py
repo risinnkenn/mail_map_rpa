@@ -89,16 +89,13 @@ def create_message_with_attachment(
         with open(file_path, "rb") as fp:
             msg = MIMEAudio(fp.read(), _subtype=sub_type)
     else:
-        if os.path.exists(file_path):#
+        if os.path.exists(file_path):
             with open(file_path, "rb") as fp:
                 msg = MIMEBase(main_type, sub_type)
                 msg.set_payload(fp.read())
                 print("できたぞー")
         else :
-            with open(file_path, "rb") as fp:
-                msg = MIMEBase(main_type, sub_type)
-                msg.set_payload(fp.read())
-                print("できたぞー")
+            
             print("失敗")
             
 
@@ -167,6 +164,7 @@ if __name__ == "__main__":
             msg = MIMEText(fp.read(), _subtype= 'plain')
             message_text = msg
             print(msg)
+            
     attach_file_path = arguments["--attach_file_path"]#pdfのパス
 
     logging.basicConfig(level=logging.DEBUG)
