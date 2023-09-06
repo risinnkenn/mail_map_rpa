@@ -20,7 +20,7 @@ def kukuridasi(adress):
     # idx = adress.find(target)
     # print(adress[idx+3: ]if idx!= -1 else "not found")
     lines = adress.split()
-    get_target = [s for s in lines if target in s]
+    get_target = [s.replace(target,"") for s in lines if target in s]
     return get_target
     
 
