@@ -1,4 +1,3 @@
-
 """
 list GMail Inbox.
 
@@ -25,7 +24,8 @@ from email.mime.text import MIMEText
 from apiclient import errors
 import logging
 from docopt import docopt
-from gmail_credential import get_credential
+from .gmail_credential import get_credential
+import time
 
 logger = logging.getLogger(__name__)
 
@@ -163,17 +163,22 @@ def main(query="is:unread", tag="daily_report", count=3):
     logger.info(json.dumps(messages, ensure_ascii=False))
     if messages:
         return json.dumps(messages, ensure_ascii=False)
+        #return messages
     else:
         return None
 
 
-# プログラム実行部分
-if __name__ == "__main__":
-    arguments = docopt(__doc__, version="0.1")
-    query = arguments["<query>"]
-    tag = arguments["<tag>"]
-    count = arguments["<count>"]
-    logging.basicConfig(level=logging.DEBUG)
 
-    messages_ = main(query=query, tag=tag, count=count)
-    print(messages_)
+# プログラム実行部分
+def output_(messages_,query,tag,count):
+    while messages_ == None :
+        messages_ = main(query=query, tag=tag, count=count)
+    output = eval(messages_)
+    print("eval_list[0]:{}".format(output[0]))
+    print(type(output[0]))
+    print(output[0]["body"])
+    print("test")
+    return output[0]["body"]
+
+
+    
