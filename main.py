@@ -19,15 +19,13 @@ def adress_output(mail_dict):
     adress = mail_dict["body"]
 
     target = "住所："
-    # idx = adress.find(target)
-    # print(adress[idx+3: ]if idx!= -1 else "not found")
     lines = adress.split()
     get_target = [s.replace(target,"") for s in lines if target in s]
     return get_target
 
 def mail_output(mail_dict):
     lines =  mail_dict["from"]
-    print(type(lines))
+    # print(type(lines))
     start = lines.index("<")
     end = lines.index(">")
     return mail_dict["from"][start+1:end]
