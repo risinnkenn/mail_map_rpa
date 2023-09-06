@@ -1,0 +1,4 @@
+% pipenv run python listmail.py label:a 見積もり依頼 10
+python sendmail.py yutakil0414@gmail.com yutakil0414@gmail.com try .txt --attach_file_path aa.pdh
+
+.txtファイルと.pdfファイルを作る
