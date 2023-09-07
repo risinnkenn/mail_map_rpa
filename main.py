@@ -15,6 +15,7 @@ import logging
 from docopt import docopt
 import time
 
+#住所を綺麗に取り出す，リスとで返す
 def adress_output(mail_dict):
     adress = mail_dict["body"]
 
@@ -22,7 +23,7 @@ def adress_output(mail_dict):
     lines = adress.split()
     get_target = [s.replace(target,"") for s in lines if target in s]
     return get_target
-
+#メアドを綺麗に取り出す，文字列で返す
 def mail_output(mail_dict):
     lines =  mail_dict["from"]
     # print(type(lines))
@@ -41,8 +42,8 @@ if __name__=="__main__":
     logging.basicConfig(level=logging.DEBUG)
     
     messages_ = main(query=query, tag=tag, count=count)
-    # output_(messages_,query,tag,count)
     
+    #全体のループ
     while True:
         
         mail_dict = output_(messages_,query,tag,count)
