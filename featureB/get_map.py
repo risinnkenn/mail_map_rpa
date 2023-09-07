@@ -7,7 +7,7 @@ from multiprocessing import Process, Pipe
 import requests
 import io
 from PIL import Image
-#wepageに対応させるため市区を消すプログラム
+#webpageに対応させるため市区を消すプログラム
 def arrange_adress(adress):
     if "区" in adress:
         return adress.split('区')[1]
