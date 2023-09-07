@@ -141,7 +141,7 @@ def send_message(service, user_id, message):
 def main_C(to,  pdf_info_list):
     # アクセストークンの取得とサービスの構築
     sender = "yutakil0414@gmail.com"#送り主
-    subject = "住所取得依頼"#件名
+    subject = "re:住所取得依頼"#件名
     cc = ""
     with open('mainText.txt', "r", encoding="utf-8") as fp:#本文
              msg = MIMEText(fp.read(), _subtype= 'plain')
