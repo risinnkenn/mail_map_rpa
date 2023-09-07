@@ -7,11 +7,6 @@ from multiprocessing import Process, Pipe
 import requests
 import io
 from PIL import Image
-<<<<<<< HEAD
-
-=======
-from matplotlib.backends.backend_pdf import PdfPages
->>>>>>> f6292f3061e0d0512bbf31a5129e0c4076b77861
 #wepageに対応させるため市区を消すプログラム
 def arrange_adress(adress):
     if "区" in adress:
@@ -103,7 +98,6 @@ def main_B(adress_list):
         process2.join()
         get_p.extend(get_d)
         image_list.append(get_p)
-<<<<<<< HEAD
         
     return image_list
 
@@ -120,10 +114,3 @@ def main_B(adress_list):
 #         "埼玉県さいたま市南区沼影１丁目２０番地１号",
 #         "埼玉県さいたま市大宮区大門町６丁目５"]
 #     main(list_adress)
-=======
-    return image_list
-
-   
-if __name__ == "__main__":
-    pass
->>>>>>> f6292f3061e0d0512bbf31a5129e0c4076b77861
