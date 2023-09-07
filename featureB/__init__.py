@@ -2,7 +2,6 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support import expected_conditions
 import time
 from multiprocessing import Process, Pipe
 import requests
@@ -65,6 +64,7 @@ def get_path(URL_path,adress,que,send_rev):
             #画像を取得
             elem_imgUrl = wait.until(EC.presence_of_element_located((By.XPATH, '//*[@id="copy"]/div[2]/div/div/div[2]/img')))
             driver_path.implicitly_wait(20)
+            #あえて早く動作を確認するといいと
             img_url = elem_imgUrl.get_attribute('src')
             img = requests.get(img_url).content
             img_file = io.BytesIO(img)
