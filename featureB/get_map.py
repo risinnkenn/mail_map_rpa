@@ -80,19 +80,19 @@ def main_B(adress_list):
     print(adress_list)
     for i in adress_list:
         get_rev_path,send_rev_path  = Pipe()
-        get_rev_duty,send_rev_duty  = Pipe()
+        get_rev_dirty,send_rev_dirty  = Pipe()
         adress = arrange_adress(i)
         #道路のURL
         URL_path="https://www.sonicweb-asp.jp/saitama/map?theme=th_31#pos=139.64570430607762%2C35.86413196358075&scale=30000"
         #下水のURL
-        URL_duty="https://www.sonicweb-asp.jp/saitama/map?theme=th_90#pos=139.62844162611339%2C35.898370027849545&scale=30000"
+        URL_dirty="https://www.sonicweb-asp.jp/saitama/map?theme=th_90#pos=139.62844162611339%2C35.898370027849545&scale=30000"
         process1 = Process(target=get_path, args=(URL_path, adress, "image_path",send_rev_path))
-        process2 = Process(target=get_path, args=(URL_duty, adress, "image_duty",send_rev_duty))
+        process2 = Process(target=get_path, args=(URL_dirty, adress, "image_dirty",send_rev_dirty))
         # プロセスを開始
         process1.start()
         process2.start()
         get_p = get_rev_path.recv()
-        get_d = get_rev_duty.recv()
+        get_d = get_rev_dirty.recv()
         # プロセスが終了するまで待機
         process1.join()
         process2.join()
