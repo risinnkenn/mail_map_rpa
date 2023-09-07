@@ -18,9 +18,6 @@ def arrange_adress(adress):
     else:
         return adress
 
-def normalize(adress):
-
-
 def get_path(URL_path,adress,que,send_rev):
     ##第一関数　ほしいデータのURL
     ##第二関数　とりたいデータの住所
