@@ -10,10 +10,13 @@ Options:
   -h --help     Show this screen.
   --version     Show version.
 """
-from featureA.listmail import output_, main
+#Aでのインポート
+from featureA.listmail import output_, main_A
 import logging
 from docopt import docopt
-import time
+
+#Bでのインポート
+from featureB.get_map import main_B
 
 #住所を綺麗に取り出す，リスとで返す
 def adress_output(mail_dict):
@@ -41,7 +44,7 @@ if __name__=="__main__":
     count = arguments["<count>"]
     logging.basicConfig(level=logging.DEBUG)
     
-    messages_ = main(query=query, tag=tag, count=count)
+    messages_ = main_A(query=query, tag=tag, count=count)
     
     #全体のループ
     while True:
@@ -55,6 +58,8 @@ if __name__=="__main__":
         mail = mail_output(mail_dict)
         print(mail)
 
+        imagelist = main_B(adress)
+        print(imagelist)
         
 
 
