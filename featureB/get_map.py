@@ -73,9 +73,11 @@ def get_path(URL_path,adress,que,send_rev):
             print("住所はあったのに悲しいな")
             send_rev.send(["住所はあったのに悲しいな",False])
         send_rev.close()
-def mainB(adress_list):
+def main_B(adress_list):
     #Aから送られてきたlistをひとつづつ処理
     image_list=[]
+    print("動作テスト")
+    print(adress_list)
     for i in adress_list:
         get_rev_path,send_rev_path  = Pipe()
         get_rev_duty,send_rev_duty  = Pipe()

@@ -148,7 +148,7 @@ def remove_labels(service, user_id, messages, remove_labels):
 
 
 # メイン処理
-def main(query="is:unread", tag="daily_report", count=3):
+def main_A(query="is:unread", tag="daily_report", count=3):
     creds = get_credential()
     service = build("gmail", "v1", credentials=creds, cache_discovery=False)
     # ラベル一覧
@@ -173,7 +173,7 @@ def main(query="is:unread", tag="daily_report", count=3):
 #メールに関わる情報を辞書にして渡す
 def output_(messages_,query,tag,count):
     while messages_ == None :
-        messages_ = main(query=query, tag=tag, count=count)
+        messages_ = main_A(query=query, tag=tag, count=count)
     output = eval(messages_)
     # print("eval_list[0]:{}".format(output[0]))
     # print(type(output[0]))
