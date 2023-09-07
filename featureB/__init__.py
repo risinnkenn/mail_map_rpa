@@ -8,7 +8,6 @@ import requests
 import io
 from PIL import Image
 from matplotlib.backends.backend_pdf import PdfPages
-
 #wepageに対応させるため市区を消すプログラム
 def arrange_adress(adress):
     if "区" in adress:
