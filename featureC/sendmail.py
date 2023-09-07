@@ -28,7 +28,7 @@ from pathlib import Path
 from email.mime.multipart import MIMEMultipart
 import mimetypes
 from apiclient import errors
-from gmail_credential import get_credential
+from .gmail_credential import get_credential
 from docopt import docopt
 import logging
 
@@ -68,7 +68,7 @@ def create_message_with_attachment(
     for i,file in enumerate(file_path_list):
         if i%2==0:
             if not os.path.exists(file):
-                with open('error.txt', "r", encoding="utf-8") as fp:
+                with open('featureC/error.txt', "r", encoding="utf-8") as fp:
                     msg = MIMEText(fp.read(), _subtype= 'plain')
                     message.attach(msg)
                     print("pdfがないよ-")
@@ -141,9 +141,9 @@ def send_message(service, user_id, message):
 def main_C(to,  pdf_info_list):
     # アクセストークンの取得とサービスの構築
     sender = "yutakil0414@gmail.com"#送り主
-    subject = "住所取得依頼"#件名
+    subject = "取得結果"#件名
     cc = ""
-    with open('mainText.txt', "r", encoding="utf-8") as fp:#本文
+    with open('featureC/mainText.txt', "r", encoding="utf-8") as fp:#本文
              msg = MIMEText(fp.read(), _subtype= 'plain')
              message_text = msg
              print(msg)
@@ -167,17 +167,17 @@ def main_C(to,  pdf_info_list):
 
 # プログラム実行部分
 
-if __name__ == "__main__":
-    arguments = [['該当する情報はありません。', False, '該当する情報はありません。', False], ['image_path大門町2丁目1-1.pdf', True, 'image_duty大門町2丁目1-1.pdf', True], ['image_path沼影１丁目２０番地１号.pdf', True, 'image_duty沼影１丁目２０番地１号.pdf', True]]
-    #ユーザー様のメールアドレス（送り先）
-    to = "yutakil0414@gmail.com" 
+# if __name__ == "__main__":
+#     arguments = [['該当する情報はありません。', False, '該当する情報はありません。', False], ['image_path大門町2丁目1-1.pdf', True, 'image_duty大門町2丁目1-1.pdf', True], ['image_path沼影１丁目２０番地１号.pdf', True, 'image_duty沼影１丁目２０番地１号.pdf', True]]
+#     #ユーザー様のメールアドレス（送り先）
+#     to = "yutakil0414@gmail.com" 
     
     
-    logging.basicConfig(level=logging.DEBUG)
+#     logging.basicConfig(level=logging.DEBUG)
 
-    for args in arguments:
+#     for args in arguments:
 
-        main_C(
-            to=to,
-            pdf_info_list=args,
-        )
+#         main_C(
+#             to=to,
+#             pdf_info_list=args,
+#         )
