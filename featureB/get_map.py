@@ -7,7 +7,6 @@ from multiprocessing import Process, Pipe
 import requests
 import io
 from PIL import Image
-from matplotlib.backends.backend_pdf import PdfPages
 #wepageに対応させるため市区を消すプログラム
 def arrange_adress(adress):
     if "区" in adress:
@@ -68,7 +67,7 @@ def get_path(URL_path,adress,que,send_rev):
             img = requests.get(img_url).content
             img_file = io.BytesIO(img)
             img_rec = Image.open(img_file)
-            img_rec.save(adress+ '.pdf')
+            img_rec.save(que+''+adress+ '.pdf')
             send_rev.send([que+''+adress+ '.pdf',True])
         except Exception as e:
             print("住所はあったのに悲しいな")
@@ -97,8 +96,6 @@ def mainB(adress_list):
         process2.join()
         get_p.extend(get_d)
         image_list.append(get_p)
-    return image_list
-
-   
+    return image_list   
 if __name__ == "__main__":
     pass
