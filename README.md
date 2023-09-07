@@ -9,3 +9,5 @@ featureC : 仁平
 
 A → B :住所のリスト
 A → C :送信者のメアド
+
+B → C file_path(list)
