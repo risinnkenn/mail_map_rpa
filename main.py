@@ -18,6 +18,9 @@ from docopt import docopt
 #Bでのインポート
 from featureB.get_map import main_B
 
+#Cでのインポート
+# from featureC.   import main_C
+
 #住所を綺麗に取り出す，リスとで返す
 def adress_output(mail_dict):
     adress = mail_dict["body"]
@@ -60,7 +63,9 @@ if __name__=="__main__":
 
         imagelist = main_B(adress)
         print(imagelist)
+
+        # main_c(imagelist,mail)
         
-        
+
 
         messages_ = None
