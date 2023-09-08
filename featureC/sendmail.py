@@ -67,7 +67,7 @@ def create_message_with_attachment(
     enc = "utf-8"
     #pdfが存在しない場合
     for i,file in enumerate(file_path_list):
-        if i%2!=0:
+        if i%2==0:
             if not os.path.exists(file):
                 with open('featureC/error.txt', "r", encoding="utf-8") as fp:
                     msg = MIMEText(fp.read(), _subtype= 'plain')
