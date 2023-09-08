@@ -23,6 +23,7 @@ from email.mime.base import MIMEBase
 from email.mime.text import MIMEText
 from email.mime.image import MIMEImage
 from email.mime.audio import MIMEAudio
+from email.mime.application import MIMEApplication
 from pathlib import Path
 
 from email.mime.multipart import MIMEMultipart
@@ -66,7 +67,7 @@ def create_message_with_attachment(
     enc = "utf-8"
     #pdfが存在しない場合
     for i,file in enumerate(file_path_list):
-        if i%2==0:
+        if i%2!=0:
             if not os.path.exists(file):
                 with open('featureC/error.txt', "r", encoding="utf-8") as fp:
                     msg = MIMEText(fp.read(), _subtype= 'plain')
@@ -91,6 +92,9 @@ def create_message_with_attachment(
             elif main_type == "audio":
                 with open(file, "rb") as fp:
                     msg = MIMEAudio(fp.read(), _subtype=sub_type)
+            elif main_type == "application":
+                with open(file, "rb") as fp:
+                    msg = MIMEApplication(fp.read(), _subtype=sub_type)
             else:
                 if os.path.exists(file):
                     with open(file, "rb") as fp:
