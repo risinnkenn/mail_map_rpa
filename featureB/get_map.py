@@ -26,6 +26,8 @@ def get_path(URL_path,adress,que,send_rev):
     ##第三関数　地図の種類
     ##第四関数　データを送る魔法
     try:
+        #修正するべき点
+        #tryを二つにして住所取得前にエラーが出ているかどうかで判断をするべきかもしれない
         driver_path = webdriver.Chrome()
         driver_path.get(URL_path)
         driver_path.implicitly_wait(10)
@@ -74,8 +76,8 @@ def get_path(URL_path,adress,que,send_rev):
             img_rec.save(que+''+adress+ '.pdf')
             send_rev.send([que+''+adress+ '.pdf',True])
     except Exception as e:
-        print("住所はあったのに悲しいな")
-        send_rev.send(["住所はあったのに悲しいな",False])
+        print("Run_Time_Out_error")
+        send_rev.send(["Run_Time_Out_error",False])
     send_rev.close()
 
 
