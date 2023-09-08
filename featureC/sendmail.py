@@ -15,6 +15,7 @@ Options:
 """
 import pickle
 import os.path
+import smtplib
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
@@ -60,22 +61,28 @@ def create_message_with_attachment(
     message["to"] = to
     message["from"] = sender
     message["subject"] = subject
+    count=0
     if cc:
         message["Cc"] = cc
     # attach message text
     enc = "utf-8"
-    #pdfが存在しない場合
+    #エラー検査とファイル読み込み
     for i,file in enumerate(file_path_list):
-        if i%2==0:
-            if not os.path.exists(file):
+        if i%2!=0:#pdfにエラーが起きてるかの検査
+            if file:
+                print("pdf異常なし！")
+                count+=1
+            else :
+                print("pdf異常あり！")
                 with open('error.txt', "r", encoding="utf-8") as fp:
                     msg = MIMEText(fp.read(), _subtype= 'plain')
                     message.attach(msg)
-                    print("pdfがないよ-")
-            else :
-                    message.attach(message_text)
-                    print("pdfあったよ-")
-            
+        if count==2:
+            with open('mainText.txt', "r", encoding="utf-8") as fp:#本文
+                    msg = MIMEText(fp.read(), _subtype= 'plain')
+                    message.attach(msg)
+                    print(msg)
+        if i%2==0:
             content_type, encoding = mimetypes.guess_type(file)
 
             if content_type is None or encoding is not None:
@@ -91,14 +98,11 @@ def create_message_with_attachment(
             elif main_type == "audio":
                 with open(file, "rb") as fp:
                     msg = MIMEAudio(fp.read(), _subtype=sub_type)
-            else:
-                if os.path.exists(file):
-                    with open(file, "rb") as fp:
-                        msg = MIMEBase(main_type, sub_type)
-                        msg.set_payload(fp.read())
-                        print("できたぞー")
-                else : 
-                    print("失敗")
+            else :
+                with open(file, "rb") as fp:
+                    msg = MIMEBase(main_type, sub_type)
+                    msg.set_payload(fp.read())
+                    print("pdf届いたよ～")
                     
             p = Path(file)
             msg.add_header("Content-Disposition", "attachment", filename=p.name)
@@ -141,24 +145,21 @@ def send_message(service, user_id, message):
 def main_C(to,  pdf_info_list):
     # アクセストークンの取得とサービスの構築
     sender = "yutakil0414@gmail.com"#送り主
-    subject = "住所取得依頼"#件名
+    subject = "re:住所取得依頼"#件名
     cc = ""
     with open('mainText.txt', "r", encoding="utf-8") as fp:#本文
              msg = MIMEText(fp.read(), _subtype= 'plain')
              message_text = msg
              print(msg)
+        
     creds = get_credential()
     service = build("gmail", "v1", credentials=creds, cache_discovery=False)
-    if pdf_info_list[0]:#road
-        if pdf_info_list[2]:#dirty
-            # メール本文の作成
-            message = create_message_with_attachment(
-                sender, to, subject, message_text, pdf_info_list, cc=cc
-            )
-    else:
-        message = create_message(
-            sender, to, subject, message_text, cc=cc
-        )
+   
+    # メール本文の作成
+    message = create_message_with_attachment(
+        sender, to, subject, message_text, pdf_info_list, cc=cc
+    )
+   
     
     # メール送信
     #if len==count:
@@ -168,7 +169,7 @@ def main_C(to,  pdf_info_list):
 # プログラム実行部分
 
 if __name__ == "__main__":
-    arguments = [['該当する情報はありません。', False, '該当する情報はありません。', False], ['image_path大門町2丁目1-1.pdf', True, 'image_duty大門町2丁目1-1.pdf', True], ['image_path沼影１丁目２０番地１号.pdf', True, 'image_duty沼影１丁目２０番地１号.pdf', True]]
+    arguments = [['沼影１丁目２０番地１号.pdf', True, '大門町2丁目1-1.pdf', False],['沼影１丁目２０番地１号.pdf', True, '大門町2丁目1-1.pdf', True]]
     #ユーザー様のメールアドレス（送り先）
     to = "yutakil0414@gmail.com" 
     

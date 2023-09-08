@@ -11,7 +11,7 @@
             "program": "${file}",
             "console": "integratedTerminal",
             "justMyCode": true,
-            "args": [ "yutakil0414@gmail.com",   "--attach_file_path", "est.pdf" ],
+            "args": [ "yutakil0414@gmail.com",   "--road_attach_file_path", "test.pdf","--dirty_attach_file_path","test.pdf" ],
             "cwd": "${workspaceFolder}\\featureC"
         }
     ]
